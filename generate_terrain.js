@@ -1,7 +1,7 @@
 
 Iron.V0.SetTerrainGenerator("terrain_generator")
 function terrain_generator (seed, chunkRadius, data, offsetX, offsetY, offsetZ) {
-    noise.seed(seed)
+    //noise.seed(seed)
 
     var frequency = 0.025
     var heightRange = 50.0
