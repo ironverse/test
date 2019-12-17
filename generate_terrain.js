@@ -13,7 +13,7 @@ function terrain_generator (seed, chunkRadius, data, offsetX, offsetY, offsetZ) 
                 for(var y = -chunkRadius; y <= chunkRadius; y++) {
                     
                     data[i] = 0
-                    var value = Iron.V0.OpenSimplexEval2((offsetX+x) * frequency, (offsetZ+z) * frequency)
+                    var value = 1.0
                     var height = (value + 1) * 0.5 * heightRange
                     if(offsetY+y <= height) {
                         data[i] = 1
