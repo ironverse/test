@@ -13,7 +13,7 @@ function terrain_generator (seed, chunkRadius, data, offsetX, offsetY, offsetZ) 
                 for(var y = -chunkRadius; y <= chunkRadius; y++) {
                     
                     data[i] = 0
-                    var value = noise.simplex2((hexX+x) * frequency, (hexZ+z) * frequency)
+                    var value = noise.simplex2((offsetX+x) * frequency, (offsetZ+z) * frequency)
                     var height = (value + 1) * 0.5 * heightRange
                     if(offsetY+y <= height) {
                         data[i] = 1
