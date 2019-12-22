@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	Frequency   = 0.025
-	HeightRange = 50
+	Frequency   = 0.05
+	HeightRange = 5
 )
 
 func main() {
