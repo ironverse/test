@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	Frequency   = 0.005
+	Frequency   = 0.25
 	HeightRange = 60
 )
 
