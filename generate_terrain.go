@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	Frequency   = 0.025
-	HeightRange = 50
+	Frequency   = 0.005
+	HeightRange = 60
 )
 
 func main() {
@@ -27,6 +27,15 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 					zFloat := float64(hexOffset.Z+z) * Frequency
 					value := core.WorldGen.Get2dNoise(xFloat, zFloat)
 					height := (value + 1) * 0.5 * HeightRange
+					if height < 25 {
+						height *= 0.25
+					}
+					if height >= 25 {
+						height *= 1.25
+					}
+					if height > HeightRange {
+						height = HeightRange
+					}
 					if hexOffset.Y+y+50 <= int(height) {
 						hexValue = true
 					}
