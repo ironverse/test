@@ -7,10 +7,9 @@ import (
 )
 
 var (
-	Frequency      = 0.025
-	HeightRange    = 50
-	CaveFrequency  = 0.01
-	CaveFrequencyY = 0.05
+	Frequency     = 0.025
+	HeightRange   = 50
+	CaveFrequency = 0.01
 )
 
 func main() {
@@ -41,10 +40,10 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 					}
 
 					caveX := float64(hexOffset.X+x) * CaveFrequency
-					caveY := float64(hexOffset.Y+y) * CaveFrequencyY
+					caveY := float64(hexOffset.Y+y) * CaveFrequency
 					caveZ := float64(hexOffset.Z+z) * CaveFrequency
 					value = core.WorldGen.Get3dNoise(caveX, caveY, caveZ)
-					if value > 0.55 {
+					if value < -0.55 {
 						data[i] = 0
 					}
 
