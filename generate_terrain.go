@@ -9,7 +9,7 @@ import (
 var (
 	Frequency     = 0.025
 	HeightRange   = 50
-	CaveFrequency = 0.01
+	CaveFrequency = 0.02
 )
 
 func main() {
