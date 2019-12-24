@@ -39,7 +39,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						data[i] = 0
 					}
 
-					caveX := float64(hexOffset.X+z) * CaveFrequency
+					caveX := float64(hexOffset.X+x) * CaveFrequency
 					caveY := float64(hexOffset.Y+y) * CaveFrequency
 					caveZ := float64(hexOffset.Z+z) * CaveFrequency
 					value = core.WorldGen.Get3dNoise(caveX, caveY, caveZ)
