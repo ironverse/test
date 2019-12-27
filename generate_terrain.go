@@ -7,8 +7,15 @@ import (
 )
 
 var (
-	Frequency   = 0.025
-	HeightRange = 50
+	SkyIslandsFrequency = 0.025
+	PillarsFrequency    = 0.025
+	HillsFrequency      = 0.025
+	PlainsFrequency     = 0.01
+
+	SkyIslandsHeight = 40
+	PillarsHeight    = 15
+	HillsHeight      = 25
+	PlainsHeight     = 7
 )
 
 func main() {
@@ -21,21 +28,31 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 			if math.Abs(float64(x-z)) <= float64(chunkRadius) {
 				for y := -chunkRadius; y <= chunkRadius; y++ {
 
-					//--Start Hex Logic--//
-					hexValue := false
-					xFloat := float64(hexOffset.X+x) * Frequency
-					zFloat := float64(hexOffset.Z+z) * Frequency
-					value := core.WorldGen.Get2dNoise(xFloat, zFloat)
-					height := (value + 1) * 0.5 * HeightRange
-					if hexOffset.Y+y+50 <= int(height) {
-						hexValue = true
-					}
-					//--End Hex Logic--//
+					skyIslandValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*SkyIslandsFrequency+10000, float64(hexOffset.Z+z)*SkyIslandsFrequency+10000)
+					pillarsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*PillarsFrequency-10000, float64(hexOffset.Z+z)*PillarsFrequency-10000)
+					hillsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
+					plainsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
 
-					if hexValue {
-						data[i] = 1
+					if hexOffset.Y+y > 0 && hexOffset.Y+y < SkyIslandsHeight && skyIslandValue > 0.25 {
+						//sky islands
+					} else if pillarsValue > 0.25 {
+						//pillars
+					} else if hillsValue > 0.25 {
+						//hills
+						height := hillsValue * HillsHeight
+						if hexOffset.Y+y+50 <= int(height) {
+							data[i] = 1
+						} else {
+							data[i] = 0
+						}
 					} else {
-						data[i] = 0
+						//plains
+						height := plainsValue * PlainsHeight
+						if hexOffset.Y+y+50 <= int(height) {
+							data[i] = 1
+						} else {
+							data[i] = 0
+						}
 					}
 					i++
 				}
