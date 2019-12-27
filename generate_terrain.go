@@ -7,10 +7,13 @@ import (
 )
 
 var (
-	SkyIslandsFrequency = 0.025
-	PillarsFrequency    = 0.25
-	HillsFrequency      = 0.025
-	PlainsFrequency     = 0.01
+	BiomesFrequency = 0.002
+
+	SkyIslandsFrequency        = 0.025
+	SkyIslandsSpacingFrequency = 0.25
+	PillarsFrequency           = 0.25
+	HillsFrequency             = 0.025
+	PlainsFrequency            = 0.01
 
 	SkyIslandsHeight = 40
 	PillarsHeight    = 15
@@ -28,15 +31,30 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 			if math.Abs(float64(x-z)) <= float64(chunkRadius) {
 				for y := -chunkRadius; y <= chunkRadius; y++ {
 
-					skyIslandValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*SkyIslandsFrequency+10000, float64(hexOffset.Z+z)*SkyIslandsFrequency+10000)
-					pillarsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*PillarsFrequency-10000, float64(hexOffset.Z+z)*PillarsFrequency-10000)
-					hillsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
-					plainsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
+					biomesValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*BiomesFrequency, float64(hexOffset.Z+z)*BiomesFrequency)
 
-					if hexOffset.Y+y > 0 && hexOffset.Y+y < SkyIslandsHeight && skyIslandValue > 0.25 {
+					if biomesValue > 0.25 {
 						//sky islands
-					} else if pillarsValue > 0.25 {
+						if hexOffset.Y+y > 0 && hexOffset.Y+y < SkyIslandsHeight {
+							skyIslandValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*SkyIslandsFrequency+10000, float64(hexOffset.Z+z)*SkyIslandsFrequency+10000)
+							height := skyIslandValue * SkyIslandsHeight
+							if hexOffset.Y+y+50 <= int(height) {
+								data[i] = 1
+							} else {
+								data[i] = 0
+							}
+
+							caveX := float64(hexOffset.X+x) * SkyIslandsSpacingFrequency
+							caveY := float64(hexOffset.Y+y) * SkyIslandsSpacingFrequency
+							caveZ := float64(hexOffset.Z+z) * SkyIslandsSpacingFrequency
+							value := core.WorldGen.Get3dNoise(caveX, caveY, caveZ)
+							if value > -0.5 {
+								data[i] = 0
+							}
+						}
+					} else if biomesValue < -0.25 {
 						//pillars
+						pillarsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*PillarsFrequency-10000, float64(hexOffset.Z+z)*PillarsFrequency-10000)
 						height := pillarsValue * PillarsHeight
 						if height < 25 {
 							height *= 0.25
@@ -52,8 +70,9 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						} else {
 							data[i] = 0
 						}
-					} else if hillsValue > 0.25 {
+					} else if biomesValue < 0 && biomesValue >= -0.25 {
 						//hills
+						hillsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
 						height := hillsValue * HillsHeight
 						if hexOffset.Y+y+50 <= int(height) {
 							data[i] = 1
@@ -62,6 +81,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						}
 					} else {
 						//plains
+						plainsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency-10000, float64(hexOffset.Z+z)*HillsFrequency+10000)
 						height := plainsValue * PlainsHeight
 						if hexOffset.Y+y+50 <= int(height) {
 							data[i] = 1
