@@ -38,7 +38,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						if hexOffset.Y+y > 0 && hexOffset.Y+y < SkyIslandsHeight {
 							skyIslandValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*SkyIslandsFrequency+10000, float64(hexOffset.Z+z)*SkyIslandsFrequency+10000)
 							height := skyIslandValue * SkyIslandsHeight
-							if hexOffset.Y+y+50 <= int(height) {
+							if hexOffset.Y+y <= int(height) {
 								data[i] = 1
 							} else {
 								data[i] = 0
@@ -65,7 +65,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						if height > PillarsHeight {
 							height = PillarsHeight
 						}
-						if hexOffset.Y+y+50 <= int(height) {
+						if hexOffset.Y+y <= int(height) {
 							data[i] = 1
 						} else {
 							data[i] = 0
@@ -74,7 +74,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						//hills
 						hillsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
 						height := hillsValue * HillsHeight
-						if hexOffset.Y+y+50 <= int(height) {
+						if hexOffset.Y+y <= int(height) {
 							data[i] = 1
 						} else {
 							data[i] = 0
@@ -83,7 +83,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						//plains
 						plainsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency-10000, float64(hexOffset.Z+z)*HillsFrequency+10000)
 						height := plainsValue * PlainsHeight
-						if hexOffset.Y+y+50 <= int(height) {
+						if hexOffset.Y+y <= int(height) {
 							data[i] = 1
 						} else {
 							data[i] = 0
