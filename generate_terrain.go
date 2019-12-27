@@ -8,7 +8,7 @@ import (
 
 var (
 	SkyIslandsFrequency = 0.025
-	PillarsFrequency    = 0.025
+	PillarsFrequency    = 0.25
 	HillsFrequency      = 0.025
 	PlainsFrequency     = 0.01
 
