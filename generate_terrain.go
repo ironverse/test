@@ -37,6 +37,21 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						//sky islands
 					} else if pillarsValue > 0.25 {
 						//pillars
+						height := pillarsValue * PillarsHeight
+						if height < 25 {
+							height *= 0.25
+						}
+						if height >= 25 {
+							height *= 1.25
+						}
+						if height > PillarsHeight {
+							height = PillarsHeight
+						}
+						if hexOffset.Y+y+50 <= int(height) {
+							data[i] = 1
+						} else {
+							data[i] = 0
+						}
 					} else if hillsValue > 0.25 {
 						//hills
 						height := hillsValue * HillsHeight
