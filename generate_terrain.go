@@ -32,8 +32,9 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 				for y := -chunkRadius; y <= chunkRadius; y++ {
 
 					biomesValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*BiomesFrequency, float64(hexOffset.Z+z)*BiomesFrequency)
+					biomesTypeValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*BiomesFrequency+5000, float64(hexOffset.Z+z)*BiomesFrequency+5000)
 
-					if biomesValue > 0.25 {
+					if biomesValue > 0 && biomesTypeValue > 0 {
 						//sky islands
 						if hexOffset.Y+y > 0 && hexOffset.Y+y < SkyIslandsHeight {
 							skyIslandValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*SkyIslandsFrequency+10000, float64(hexOffset.Z+z)*SkyIslandsFrequency+10000)
@@ -52,7 +53,7 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 								data[i] = 0
 							}
 						}
-					} else if biomesValue < -0.25 {
+					} else if biomesValue <= 0 && biomesTypeValue <= 0 {
 						//pillars
 						pillarsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*PillarsFrequency-10000, float64(hexOffset.Z+z)*PillarsFrequency-10000)
 						height := pillarsValue * PillarsHeight
@@ -70,19 +71,19 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						} else {
 							data[i] = 0
 						}
-					} else if biomesValue < 0 && biomesValue >= -0.25 {
+					} else if biomesValue > 0 && biomesTypeValue <= 0 {
 						//hills
 						hillsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency+10000, float64(hexOffset.Z+z)*HillsFrequency-10000)
-						height := hillsValue * HillsHeight
+						height := hillsValue * HillsHeight * math.Abs(biomesValue) * math.Abs(biomesTypeValue)
 						if hexOffset.Y+y <= int(height) {
 							data[i] = 1
 						} else {
 							data[i] = 0
 						}
-					} else {
+					} else if biomesValue <= 0 && biomesTypeValue > 0 {
 						//plains
 						plainsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*HillsFrequency-10000, float64(hexOffset.Z+z)*HillsFrequency+10000)
-						height := plainsValue * PlainsHeight
+						height := plainsValue * PlainsHeight * math.Abs(biomesValue) * math.Abs(biomesTypeValue)
 						if hexOffset.Y+y <= int(height) {
 							data[i] = 1
 						} else {
