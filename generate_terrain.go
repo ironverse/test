@@ -7,17 +7,17 @@ import (
 )
 
 var (
-	BiomesFrequency = 0.01
+	BiomesFrequency = 0.015
 
 	SkyIslandsFrequency        = 0.025
 	SkyIslandsSpacingFrequency = 0.25
 	PillarsFrequency           = 0.25
 	HillsFrequency             = 0.025
-	PlainsFrequency            = 0.02
+	PlainsFrequency            = 0.025
 
 	SkyIslandsHeight = 40
 	PillarsHeight    = 40
-	HillsHeight      = 25
+	HillsHeight      = 30
 	PlainsHeight     = 7
 )
 
