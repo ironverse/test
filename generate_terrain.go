@@ -17,8 +17,8 @@ var (
 
 	SkyIslandsHeight = 40
 	PillarsHeight    = 30
-	HillsHeight      = 50
-	PlainsHeight     = 10
+	HillsHeight      = 160
+	PlainsHeight     = 40
 )
 
 func main() {
