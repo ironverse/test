@@ -16,7 +16,7 @@ var (
 	PlainsFrequency            = 0.01
 
 	SkyIslandsHeight = 40
-	PillarsHeight    = 15
+	PillarsHeight    = 40
 	HillsHeight      = 25
 	PlainsHeight     = 7
 )
