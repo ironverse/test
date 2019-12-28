@@ -16,9 +16,9 @@ var (
 	PlainsFrequency            = 0.025
 
 	SkyIslandsHeight = 40
-	PillarsHeight    = 40
-	HillsHeight      = 30
-	PlainsHeight     = 7
+	PillarsHeight    = 30
+	HillsHeight      = 50
+	PlainsHeight     = 10
 )
 
 func main() {
