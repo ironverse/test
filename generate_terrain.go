@@ -57,10 +57,10 @@ func GenerateWorld(data []byte, chunkRadius int, chunk *core.Position, hexOffset
 						//pillars
 						pillarsValue := core.WorldGen.Get2dNoise(float64(hexOffset.X+x)*PillarsFrequency-10000, float64(hexOffset.Z+z)*PillarsFrequency-10000)
 						height := pillarsValue * PillarsHeight
-						if height < 25 {
+						if height < PillarsHeight/2 {
 							height *= 0.25
 						}
-						if height >= 25 {
+						if height >= PillarsHeight/2 {
 							height *= 1.25
 						}
 						if height > PillarsHeight {
